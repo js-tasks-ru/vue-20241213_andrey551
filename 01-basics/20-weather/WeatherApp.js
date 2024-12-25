@@ -8,8 +8,17 @@ export default defineComponent({
     const weatherData = getWeatherData();
     const conditionIcons= WeatherConditionIcons;
 
+    const timeToMinutes = (time) => {
+      const [hours, minutes] = time.split(':').map(Number);
+      return hours * 60 + minutes;
+    }
+
     const timeToComparison = (current) => {
-      return current.dt < current.sunrise && current.dt < current.sunset;
+      const dt = timeToMinutes(current.dt);
+      const sunrise = timeToMinutes(current.sunrise);
+      const sunset = timeToMinutes(current.sunset);
+
+      return dt < sunrise && dt < sunset;
     }
 
     return {
@@ -24,8 +33,8 @@ export default defineComponent({
       <h1 class="title">Погода в Средиземье</h1>
 
       <ul class="weather-list unstyled-list">
+        <template v-for="weather in weatherData">
         <li class="weather-card"
-            v-for="weather in weatherData"
             :class="{ 'weather-card--night': timeToComparison(weather.current) }">
           <div class="weather-alert"
                v-if="weather.alert"
@@ -60,14 +69,15 @@ export default defineComponent({
             </div>
             <div class="weather-details__item">
               <div class="weather-details__item-label">Облачность, %</div>
-              <div class="weather-details__item-value">{{ weather.current.clouds }}</div>
+              <div class="weather-details__item-value">100</div>
             </div>
             <div class="weather-details__item">
               <div class="weather-details__item-label">Ветер, м/с</div>
-              <div class="weather-details__item-value">{{ weather.current.wind_speed}}</div>
+              <div class="weather-details__item-value">10.5</div>
             </div>
           </div>
         </li>
+        </template>
       </ul>
     </div>
   `,
