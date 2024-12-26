@@ -69,11 +69,11 @@ export default defineComponent({
             </div>
             <div class="weather-details__item">
               <div class="weather-details__item-label">Облачность, %</div>
-              <div class="weather-details__item-value">100</div>
+              <div class="weather-details__item-value">{{ weather.current.clouds }}</div>
             </div>
             <div class="weather-details__item">
               <div class="weather-details__item-label">Ветер, м/с</div>
-              <div class="weather-details__item-value">10.5</div>
+              <div class="weather-details__item-value">{{ weather.current.wind_speed}}</div>
             </div>
           </div>
         </li>
