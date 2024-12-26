@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch } from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 
 export default defineComponent({
   name: 'MapApp',
@@ -7,7 +7,7 @@ export default defineComponent({
     // Реактивные переменные для хранения координат метки
     const x = ref(0)
     const y = ref(0)
-    const pin = ref(null)
+    const pinStyle = computed(() => ({ left: `${x.value}px`, top: `${y.value}px` }))
 
     /**
      * Обработчик клика по карте для установки координат метки
@@ -18,25 +18,17 @@ export default defineComponent({
       y.value = event.offsetY
     }
 
-    // Следим за X и Y для установки нового положения
-    watch([x, y], () => {
-      // Находим метку и изменяем её положение
-      if (pin.value) {
-        pin.value.style.left = `${x.value}px`
-        pin.value.style.top = `${y.value}px`
-      }
-    })
-
     return {
       handleClick,
-      pin
+      pinStyle,
     }
   },
 
   template: `
     <div class="map" @click="handleClick">
       <img class="map-image" src="./map.png" alt="Map" draggable="false" />
-      <span class="pin" ref="pin">📍</span>
+      <span class="pin" :style="pinStyle">📍</span>
+      <span>{{pinStyle}}</span>
     </div>
   `,
 })
